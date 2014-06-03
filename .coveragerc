@@ -1,0 +1,7 @@
+[run]
+branch = True
+source = ami
+omit = ami/tests/*,ami/openstack/*
+
+[report]
+ignore-errors = True
