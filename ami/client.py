@@ -17,7 +17,7 @@
 import functools
 import socket
 
-from tornado.ioloop import IOLoop
+from tornado import ioloop
 from tornado import iostream
 
 from ami.openstack.common import log as logging
@@ -116,9 +116,9 @@ class AMIClient(object):
     def _handle_response(self, message):
         func = self.action_callbacks.get(message['actionid'])
         if func:
-            IOLoop.instance().add_callback(func, message)
+            ioloop.IOLoop.instance().add_callback(func, message)
 
     def _handle_event(self, message):
         func = self.event_callbacks.get(message['event'])
         if func:
-            IOLoop.instance().add_callback(func, message)
+            ioloop.IOLoop.instance().add_callback(func, message)

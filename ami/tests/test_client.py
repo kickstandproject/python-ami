@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from mock import patch
+import mock
 
 from ami import client
 from ami import test
@@ -25,7 +25,7 @@ class TestCase(test.TestCase):
         super(TestCase, self).setUp()
         self.client = client.AMIClient()
 
-    @patch.object(client.AMIClient, 'send_request')
+    @mock.patch.object(client.AMIClient, 'send_request')
     def test_login(self, mock_send_request):
         self.client.login(username='guest', password='guest')
         mock_send_request.assert_called_with(
@@ -33,7 +33,7 @@ class TestCase(test.TestCase):
             message={'action': 'login', 'username': 'guest', 'secret':
                      'guest'})
 
-    @patch.object(client.AMIClient, 'send_request')
+    @mock.patch.object(client.AMIClient, 'send_request')
     def test_login_without_events(self, mock_send_request):
         self.client.login(username='guest', password='guest', events=False)
         mock_send_request.assert_called_with(
@@ -41,7 +41,7 @@ class TestCase(test.TestCase):
             message={'action': 'login', 'username': 'guest', 'secret':
                      'guest', 'events': 'off'})
 
-    @patch.object(client.AMIClient, 'send_request')
+    @mock.patch.object(client.AMIClient, 'send_request')
     def test_logoff(self, mock_send_request):
         self.client.logoff()
         mock_send_request.assert_called_with(
@@ -62,7 +62,7 @@ class TestCase(test.TestCase):
         self.assertEqual(res, json)
         self.assertEqual(self.client.version, '1.1')
 
-    @patch.object(client.AMIClient, 'send_request')
+    @mock.patch.object(client.AMIClient, 'send_request')
     def test_ping(self, mock_send_request):
         self.client.ping()
         mock_send_request.assert_called_with(
