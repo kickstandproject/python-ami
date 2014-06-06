@@ -98,7 +98,7 @@ class AMIClient(object):
             if 'Asterisk Call Manager' in line:
                 self.version = line[len(AMI_VERSION):]
                 continue
-            key, value = line.split(':')
+            key, value = line.split(':', 1)
             result[key.lower()] = value.strip()
 
         return result

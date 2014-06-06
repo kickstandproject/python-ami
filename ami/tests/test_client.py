@@ -62,6 +62,27 @@ class TestCase(test.TestCase):
         self.assertEqual(res, json)
         self.assertEqual(self.client.version, '1.1')
 
+    def test_parse_semicolon(self):
+        json = {
+            'channel': 'SIP/pbx-01-prod-00000017',
+            'event': 'VarSet',
+            'privilege': 'dialplan,all',
+            'timestamp': '1402079382.726195',
+            'uniqueid': '1402079382.23',
+            'value': 'sip:213@10.182.21.208:5060',
+            'variable': 'SIPURI'
+        }
+        message = "Event: VarSet\r\n" \
+            "Privilege: dialplan,all\r\n" \
+            "Timestamp: 1402079382.726195\r\n" \
+            "Channel: SIP/pbx-01-prod-00000017\r\n" \
+            "Variable: SIPURI\r\n" \
+            "Value: sip:213@10.182.21.208:5060\r\n" \
+            "Uniqueid: 1402079382.23\r\n\r\n"
+
+        res = self.client._parse(message=message)
+        self.assertEqual(res, json)
+
     @mock.patch.object(client.AMIClient, 'send_request')
     def test_ping(self, mock_send_request):
         self.client.ping()
