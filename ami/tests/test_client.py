@@ -83,6 +83,50 @@ class TestCase(test.TestCase):
         res = self.client._parse(message=message)
         self.assertEqual(res, json)
 
+    def test_parse_agent_called_event(self):
+        json = {
+            'agentcalled': 'Local/s@default',
+            'agentname': '101',
+            'calleridname': 'unknown',
+            'calleridnum': '101',
+            'channelcalling': 'SIP/pbx-0000002c',
+            'connectedlinename': 'Paul Belanger',
+            'connectedlinenum': '213',
+            'context': 'queue',
+            'destinationchannel': 'Local/s@default-21e2;1',
+            'event': 'AgentCalled',
+            'extension': '101',
+            'priority': '4',
+            'privilege': 'agent,all',
+            'queue': 'support',
+            'timestamp': '1402425995.139353',
+            'uniqueid': '1402425726.166',
+            'variable': ('QUEUE_CONTEXT=queue,SIPDOMAIN=example.org,'
+                         'SIPURI=sip:213@example.org:5060'),
+        }
+        message = "Event: AgentCalled\r\n" \
+            "Privilege: agent,all\r\n" \
+            "Timestamp: 1402425995.139353\r\n" \
+            "Queue: support\r\n" \
+            "AgentCalled: Local/s@default\r\n" \
+            "AgentName: 101\r\n" \
+            "ChannelCalling: SIP/pbx-0000002c\r\n" \
+            "DestinationChannel: Local/s@default-21e2;1\r\n" \
+            "CallerIDNum: 101\r\n" \
+            "CallerIDName: unknown\r\n" \
+            "ConnectedLineNum: 213\r\n" \
+            "ConnectedLineName: Paul Belanger\r\n" \
+            "Context: queue\r\n" \
+            "Extension: 101\r\n" \
+            "Priority: 4\r\n" \
+            "Uniqueid: 1402425726.166\r\n" \
+            "Variable: QUEUE_CONTEXT=queue\r\n" \
+            "Variable: SIPDOMAIN=example.org\r\n" \
+            "Variable: SIPURI=sip:213@example.org:5060\r\n\r\n"
+
+        res = self.client._parse(message=message)
+        self.assertEqual(res, json)
+
     @mock.patch.object(client.AMIClient, 'send_request')
     def test_ping(self, mock_send_request):
         self.client.ping()

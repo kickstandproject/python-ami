@@ -99,7 +99,10 @@ class AMIClient(object):
                 self.version = line[len(AMI_VERSION):]
                 continue
             key, value = line.split(':', 1)
-            result[key.lower()] = value.strip()
+            if key.lower() in result:
+                result[key.lower()] += ',' + value.strip()
+            else:
+                result[key.lower()] = value.strip()
 
         return result
 
