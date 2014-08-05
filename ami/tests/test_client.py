@@ -62,6 +62,36 @@ class TestCase(test.TestCase):
         self.assertEqual(res, json)
         self.assertEqual(self.client.version, '1.1')
 
+    def test_parse_corrupt(self):
+        json = {
+            'channel': 'Local/2612@QueueMemberConnector2-b7b0;1',
+            'event': 'AgentComplete',
+            'holdtime': '369',
+            'member': 'Local/2612@QueueMemberConnector2/n',
+            'privilege': 'agent,all',
+            'queue': 'HelpDesk',
+            'reason': 'caller',
+            'talktime': '313',
+            'timestamp': '1407164168.288160',
+            'uniqueid': '1407163485.28592',
+            'variable': 'QUEUESRVLEVELPERF=68.9'
+        }
+        message = "Event: AgentComplete\r\n" \
+            "Privilege: agent,all\r\n" \
+            "Timestamp: 1407164168.288160\r\n" \
+            "Queue: HelpDesk\r\n" \
+            "Uniqueid: 1407163485.28592\r\n" \
+            "Channel: Local/2612@QueueMemberConnector2-b7b0;1\r\n" \
+            "Member: Local/2612@QueueMemberConnector2/n\r\n" \
+            "HoldTime: 369\r\n" \
+            "TalkTime: 313\r\n" \
+            "Reason: caller\r\n" \
+            "Variable: QUEUESRVLEVELPERF=68.9\r\n" \
+            "V\r\n\r\n"
+
+        res = self.client._parse(message=message)
+        self.assertEqual(res, json)
+
     def test_parse_semicolon(self):
         json = {
             'channel': 'SIP/pbx-01-prod-00000017',

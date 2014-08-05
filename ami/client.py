@@ -98,7 +98,11 @@ class AMIClient(object):
             if 'Asterisk Call Manager' in line:
                 self.version = line[len(AMI_VERSION):]
                 continue
-            key, value = line.split(':', 1)
+            try:
+                key, value = line.split(':', 1)
+            except Exception:
+                # For some reason the header cannot be split.
+                continue
             if key.lower() in result:
                 result[key.lower()] += ',' + value.strip()
             else:
