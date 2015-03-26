@@ -62,6 +62,16 @@ class AMIClient(object):
         }
         self.send_request(message=message, callback=callback)
 
+    def originate(self, channel, context, priority, exten, callback=None):
+        message = {
+            'action': 'originate',
+            'channel': channel,
+            'context': context,
+            'priority': priority,
+            'exten': exten,
+        }
+        self.send_request(message=message, callback=callback)
+
     def ping(self, callback=None):
         message = {
             'action': 'ping',

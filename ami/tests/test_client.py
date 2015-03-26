@@ -47,6 +47,15 @@ class TestCase(test.TestCase):
         mock_send_request.assert_called_with(
             callback=None, message={'action': 'logoff'})
 
+    @mock.patch.object(client.AMIClient, 'send_request')
+    def test_originate(self, mock_send_request):
+        self.client.originate(
+            channel='SIP/foo', context='default', priority='1', exten='s')
+        mock_send_request.assert_called_with(
+            callback=None, message={'action': 'originate', 'priority': '1',
+                                    'context': 'default', 'channel': 'SIP/foo',
+                                    'exten': 's'})
+
     def test_parse_response(self):
         json = {
             'actionid': 'e9dcec01-173f-4402-9964-26bd4d9f8b3d',
