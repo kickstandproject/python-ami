@@ -52,9 +52,19 @@ class TestCase(test.TestCase):
         self.client.originate(
             channel='SIP/foo', context='default', priority='1', exten='s')
         mock_send_request.assert_called_with(
-            callback=None, message={'action': 'originate', 'priority': '1',
-                                    'context': 'default', 'channel': 'SIP/foo',
-                                    'exten': 's'})
+            callback=None, message={'action': 'originate', 'async': False,
+                                    'priority': '1', 'context': 'default',
+                                    'channel': 'SIP/foo', 'exten': 's'})
+
+    @mock.patch.object(client.AMIClient, 'send_request')
+    def test_originate_async(self, mock_send_request):
+        self.client.originate(
+            channel='SIP/foo', context='default', priority='1', exten='s',
+            async=True)
+        mock_send_request.assert_called_with(
+            callback=None, message={'action': 'originate', 'async': True,
+                                    'priority': '1', 'context': 'default',
+                                    'channel': 'SIP/foo', 'exten': 's'})
 
     def test_parse_response(self):
         json = {
