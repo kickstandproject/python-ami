@@ -123,9 +123,9 @@ class AMIClient(object):
     def _handle_response(self, message):
         func = self.action_callbacks.get(message['actionid'])
         if func:
-            ioloop.IOLoop.instance().add_callback(func, message)
+            ioloop.IOLoop.current().add_callback(func, message)
 
     def _handle_event(self, message):
         func = self.event_callbacks.get(message['event'])
         if func:
-            ioloop.IOLoop.instance().add_callback(func, message)
+            ioloop.IOLoop.current().add_callback(func, message)
