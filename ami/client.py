@@ -81,6 +81,16 @@ class AMIClient(object):
         }
         self.send_request(message=message, callback=callback)
 
+    def redirect(self, channel, context, priority, exten, callback=None):
+        message = {
+            'action': 'redirect',
+            'channel': channel,
+            'context': context,
+            'priority': priority,
+            'exten': exten,
+        }
+        self.send_request(message=message, callback=callback)
+
     def register_event(self, name, callback):
         self.event_callbacks[name] = callback
 

@@ -182,6 +182,15 @@ class TestCase(test.TestCase):
         mock_send_request.assert_called_with(
             callback=None, message={'action': 'ping'})
 
+    @mock.patch.object(client.AMIClient, 'send_request')
+    def test_redirect(self, mock_send_request):
+        self.client.redirect(
+            channel='SIP/foo', context='default', priority='1', exten='s')
+        mock_send_request.assert_called_with(
+            callback=None, message={'action': 'redirect',
+                                    'priority': '1', 'context': 'default',
+                                    'channel': 'SIP/foo', 'exten': 's'})
+
     def test_register_event(self):
         def handler(self):
             pass
